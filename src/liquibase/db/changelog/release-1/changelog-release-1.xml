@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <include file="db/changelog/release-1/2022-05-28--01-init-tables.sql"/>
+    <include file="db/changelog/release-1/2022-05-31--01-add-connection-table.sql"/>
+    <include file="db/changelog/release-1/2022-06-11--01-add-state-log-table.sql"/>
+    <include file="db/changelog/release-1/2022-06-26--01-add-ticket-column.sql"/>
+    <include file="db/changelog/release-1/2022-06-26--02-alter-tables-remove-not-null.sql"/>
+</databaseChangeLog>
