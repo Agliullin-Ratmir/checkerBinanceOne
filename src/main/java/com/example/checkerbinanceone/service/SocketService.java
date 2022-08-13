@@ -31,12 +31,11 @@ public class SocketService {
         WebsocketClientImpl client = new WebsocketClientImpl();
         cacheService.rebootCache();
         Map<String, List<UserPriceRangeDto>> cache = cacheService.getLocalCache();
-        Set<String> streams = cache.keySet();
-        streams.forEach(item -> {
-            client.aggTradeStream(item, ((event) -> {
-                    checkTicket(event, cache.get(item));
+        for (Map.Entry<String, List<UserPriceRangeDto>> entry : cache.entrySet()) {
+            client.aggTradeStream(entry.getKey(), ((event) -> {
+                checkTicket(event, entry.getValue());
             }));
-        });
+        }
     }
 
     private boolean isPriceInRange(double price, double lower, double higher) {
