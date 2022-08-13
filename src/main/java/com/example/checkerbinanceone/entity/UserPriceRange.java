@@ -1,7 +1,9 @@
 package com.example.checkerbinanceone.entity;
 
+import com.example.checkerbinanceone.listener.UserPriceRangeListener;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+//@EntityListeners(UserPriceRangeListener.class)
 @Entity
 @Table(name = "user_price_range")
 public class UserPriceRange implements Serializable {
@@ -26,11 +29,6 @@ public class UserPriceRange implements Serializable {
     @Column(name = "chat_id")
     private String userChatId;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "userPriceRange")
-    private PricePair pricePair;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @LazyToOne(LazyToOneOption.NO_PROXY)
     @JoinTable(name = "tickets_user_price_ranges",
@@ -40,5 +38,6 @@ public class UserPriceRange implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @Column(name = "modify_date")
+    @CreationTimestamp
     private LocalDateTime modifyDate;
 }

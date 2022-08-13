@@ -46,4 +46,7 @@ public class StateLog implements Serializable {
     @CreationTimestamp
     @Column(name = "modify_date")
     private LocalDateTime modifyDate;
+
+    @Column(name = "updating_ticket_id")
+    private Long updatingTicketId;
 }

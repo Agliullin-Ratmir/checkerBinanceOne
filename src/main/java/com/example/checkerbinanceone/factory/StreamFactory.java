@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class StreamFactory {
 
     public static StreamDto createStreamDto(String source) {
-        JSONObject obj = new JSONObject(source).getJSONObject("data");
+        JSONObject obj = new JSONObject(source);  //.getJSONObject("data");
         double price = obj.getDouble("p");
         String ticket = obj.getString("s");
         return new StreamDto(ticket, price);

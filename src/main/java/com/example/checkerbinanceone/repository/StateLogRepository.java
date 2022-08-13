@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface StateLogRepository extends JpaRepository<StateLog, Long> {
 
     Optional<StateLog> getStateLogByUserChatId(String userChatId);
+    int deleteAllByUserChatId(String userChatId);
 }

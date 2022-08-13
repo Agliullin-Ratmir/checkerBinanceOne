@@ -3,6 +3,7 @@ package com.example.checkerbinanceone.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,11 +29,12 @@ public class PricePair implements Serializable {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_price_range_fk")
-    private UserPriceRange userPriceRange;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ticket_fk")
+    private Ticket ticket;
 
     @EqualsAndHashCode.Exclude
     @Column(name = "modify_date")
+    @CreationTimestamp
     private LocalDateTime modifyDate;
 }

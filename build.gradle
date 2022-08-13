@@ -31,7 +31,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-tomcat:$springVersion"
     implementation "org.hibernate:hibernate-core:$hibernateVersion"
     implementation "org.hibernate:hibernate-validator:$hibernateVersion"
-    runtimeOnly "org.postgresql:postgresql:$postgresqlVersion"
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation group: 'io.github.binance', name: 'binance-connector-java', version: '1.5.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
@@ -42,6 +42,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.10.0'
 }
 
 tasks.named('test') {

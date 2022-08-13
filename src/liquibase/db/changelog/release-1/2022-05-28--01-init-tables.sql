@@ -16,7 +16,6 @@ alter table public.price_range add constraint price_range_fk
 create table public.user_price_range (
   user_price_range_id bigserial primary key not null,
   chat_id text,
-  price_range_fk bigint not null,
   modify_date timestamp default now()
 );
 alter table public.user_price_range add constraint user_price_range_fk
@@ -28,6 +27,7 @@ create table public.ticket (
                                          ticket_id bigserial primary key not null,
                                          ticket_title text,
                                          user_price_range_fk bigint not null,
+                                         price_range_fk bigint not null,
                                          modify_date timestamp default now()
 );
 alter table public.ticket add constraint ticket_fk

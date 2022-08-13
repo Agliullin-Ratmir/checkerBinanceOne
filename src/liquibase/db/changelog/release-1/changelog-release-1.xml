@@ -9,4 +9,8 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <include file="db/changelog/release-1/2022-06-11--01-add-state-log-table.sql"/>
     <include file="db/changelog/release-1/2022-06-26--01-add-ticket-column.sql"/>
     <include file="db/changelog/release-1/2022-06-26--02-alter-tables-remove-not-null.sql"/>
+    <include file="db/changelog/release-1/2022-07-02--01-add-ticket-dict-table.sql"/>
+    <include file="db/changelog/release-1/2022-07-02--02-alter-price-pair.sql"/>
+    <include file="db/changelog/release-1/2022-07-02--03-remove-columns.sql"/>
+    <include file="db/changelog/release-1/2022-07-11--01-add-types-and-column.sql"/>
 </databaseChangeLog>

@@ -3,6 +3,7 @@ package com.example.checkerbinanceone.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
@@ -27,16 +28,18 @@ public class Ticket implements Serializable {
     @Column(name = "ticket_title")
     private String ticketTitle;
 
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "ticket")
+    private PricePair pricePair;
+
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany(mappedBy = "tickets")
-//    @LazyToOne(LazyToOneOption.NO_PROXY)
-//    @JoinTable(name = "tickets_user_price_ranges",
-//            joinColumns = @JoinColumn(name = "ticket_fk"),
-//            inverseJoinColumns = @JoinColumn(name = "user_price_range_fk"))
+    @ManyToMany(mappedBy = "tickets", cascade = CascadeType.PERSIST)
     private Set<UserPriceRange> userPriceRanges = new HashSet<>(0);
 
     @EqualsAndHashCode.Exclude
     @Column(name = "modify_date")
+    @CreationTimestamp
     private LocalDateTime modifyDate;
 }

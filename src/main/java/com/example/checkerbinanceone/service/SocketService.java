@@ -4,54 +4,56 @@ import com.binance.connector.client.enums.DefaultUrls;
 import com.binance.connector.client.impl.SpotClientImpl;
 import com.binance.connector.client.impl.WebsocketClientImpl;
 import com.example.checkerbinanceone.dto.StreamDto;
+import com.example.checkerbinanceone.dto.UserPriceRangeDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.example.checkerbinanceone.factory.StreamFactory.createStreamDto;
 
+@Service
 public class SocketService {
 
-    public static void connect() {
+    @Autowired
+    private CacheService cacheService;
+
+    @PostConstruct
+    public void connect() {
 
         WebsocketClientImpl client = new WebsocketClientImpl();
-
-//Combining Streams
-        ArrayList<String> streams = new ArrayList<>();
-        streams.add("btcbusd@trade");
-        streams.add("ethbusd@trade");
-
-
-
-        int streamID2 = client.combineStreams(streams, ((event) -> {
-            checkTicket(event);
-        }));
-
-        SpotClientImpl spotClient = new SpotClientImpl("vcih0XpquVTtlt8uuw12jzQWr0auQr87ynxnDPTKJhQXHMahXkeSE8sIy9AMeNkp",
-                "ww0Y1rRN3M4JDT7iMi0wvq1MAdNtDv0HbzFU0BkAYDZEpYgzHaztLLNODTw6DO5O",
-                DefaultUrls.TESTNET_URL);
-        JSONObject obj = new JSONObject(spotClient.createUserData().createListenKey());
-        String listenKey = obj.getString("listenKey");
-
-//Closing a single stream
-        client.closeConnection(streamID2); //closes aggTradeStream-btcusdt
-
-//Closing all streams
-        client.closeAllConnections();
+        cacheService.rebootCache();
+        Map<String, List<UserPriceRangeDto>> cache = cacheService.getLocalCache();
+        Set<String> streams = cache.keySet();
+        streams.forEach(item -> {
+            client.aggTradeStream(item, ((event) -> {
+                    checkTicket(event, cache.get(item));
+            }));
+        });
     }
 
-    private static boolean isPriceInRange(double price, double lower, double higher) {
+    private boolean isPriceInRange(double price, double lower, double higher) {
         if (price <= higher && price >= lower) {
             return true;
         }
         return false;
     }
 
-    private static void checkTicket(String source) {
+    private void checkTicket(String source, List<UserPriceRangeDto> list) {
         StreamDto dto = createStreamDto(source);
-        if (isPriceInRange(dto.getPrice(), 1000d, 40000d)) {
-            System.out.println("Ticket in th range:" + dto);
-        }
+        list.forEach(item -> {
+//            if (isPriceInRange(dto.getPrice(), item.getLowerPrice(),
+//                    item.getHigherPrice())) {
+                System.out.println("Ticket in th range:" + dto.getTicket()
+                + " chatId: " + item.getUserChatId() + " price: " + dto.getPrice());
+        //    }
+        });
     }
 }
